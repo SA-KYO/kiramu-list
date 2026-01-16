@@ -1,0 +1,839 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>参加者リスト | ダイアルアップ</title>
+  <style>
+    :root {
+      --ink: #1e1a16;
+      --paper: #f7f0dc;
+      --paper-dark: #e0d3b8;
+      --accent: #1f4f9a;
+      --accent-light: #4d7bd1;
+      --alert: #ffb34a;
+      --grid: #bcae97;
+      --panel: #fefbf2;
+      --shadow: rgba(33, 26, 21, 0.25);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "MS PGothic", "Osaka", "Hiragino Kaku Gothic ProN", "Yu Gothic", "Courier New", monospace;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.65), rgba(255, 255, 255, 0) 45%),
+        radial-gradient(circle at 80% 0%, rgba(255, 236, 201, 0.7), rgba(255, 255, 255, 0) 50%),
+        linear-gradient(135deg, #f2e6c9, #d2c0a1);
+      min-height: 100vh;
+      position: relative;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image:
+        radial-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 0),
+        repeating-linear-gradient(transparent 0 2px, rgba(0, 0, 0, 0.04) 2px 3px);
+      background-size: 18px 18px, 100% 3px;
+      mix-blend-mode: multiply;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    main {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: minmax(250px, 320px) minmax(0, 1fr);
+      gap: 24px;
+      padding: 28px;
+    }
+
+    .window {
+      background: var(--panel);
+      border: 2px solid var(--ink);
+      box-shadow: 6px 6px 0 var(--shadow);
+    }
+
+    .titlebar {
+      background: linear-gradient(90deg, var(--accent), var(--accent-light));
+      color: #fff;
+      padding: 8px 12px;
+      font-size: 14px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border-bottom: 2px solid var(--ink);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .titlebar small {
+      font-size: 11px;
+      opacity: 0.8;
+      letter-spacing: 0.16em;
+    }
+
+    .panel-body {
+      padding: 16px;
+    }
+
+    .modem {
+      width: 220px;
+      height: 220px;
+      margin: 0 auto 18px;
+      border: 3px solid var(--ink);
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 30% 30%, #fff9e8 0 35%, #e8d7b8 60%, #b59f7a 100%);
+      position: relative;
+      box-shadow: inset 0 0 0 8px rgba(255, 255, 255, 0.35);
+    }
+
+    .modem::before {
+      content: "";
+      position: absolute;
+      inset: 18px;
+      border: 2px dashed rgba(0, 0, 0, 0.35);
+      border-radius: 50%;
+    }
+
+    .dial {
+      position: absolute;
+      inset: 46px;
+      border-radius: 50%;
+      border: 2px solid rgba(0, 0, 0, 0.5);
+      background: radial-gradient(circle at 40% 40%, #fff 0 20%, #dbc7a7 60%, #b09065 100%);
+      display: grid;
+      place-items: center;
+      animation: rotate 8s linear infinite;
+    }
+
+    .dial span {
+      font-size: 12px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+
+    .holes {
+      position: absolute;
+      inset: 26px;
+      border-radius: 50%;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: repeat(4, 1fr);
+      gap: 8px;
+      transform: rotate(12deg);
+    }
+
+    .hole {
+      border-radius: 50%;
+      background: #3b2c20;
+      box-shadow: inset 2px 2px 0 rgba(255, 255, 255, 0.2);
+    }
+
+    .status-lights {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      gap: 8px;
+    }
+
+    .light {
+      flex: 1;
+      border: 2px solid var(--ink);
+      padding: 8px 4px;
+      background: #f7edd4;
+      text-align: center;
+      font-size: 11px;
+    }
+
+    .lamp {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      margin: 0 auto 6px;
+      background: #3b2c20;
+      box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.4);
+    }
+
+    .lamp.blink {
+      background: #9d4b2e;
+      animation: blink 1.3s steps(2) infinite;
+      box-shadow: 0 0 10px rgba(255, 180, 80, 0.6);
+    }
+
+    .lamp.steady {
+      background: #4f9a3b;
+      box-shadow: 0 0 12px rgba(90, 190, 90, 0.65);
+    }
+
+    .log {
+      background: #1f1a16;
+      color: #d8c5a4;
+      font-size: 12px;
+      padding: 12px;
+      border: 2px solid var(--ink);
+      line-height: 1.6;
+      text-shadow: 0 0 6px rgba(255, 200, 140, 0.25);
+    }
+
+    .log .typed {
+      display: block;
+      animation: typing 6s steps(30, end) infinite;
+      white-space: nowrap;
+      overflow: hidden;
+      border-right: 2px solid rgba(255, 255, 255, 0.4);
+    }
+
+    .meter {
+      margin-top: 10px;
+      height: 12px;
+      background: #36281d;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      overflow: hidden;
+    }
+
+    .meter span {
+      display: block;
+      height: 100%;
+      background: linear-gradient(90deg, #e8b95e, #d87d2f, #ffda8c);
+      animation: meter 2.6s linear infinite;
+    }
+
+    .list-panel {
+      display: grid;
+      gap: 20px;
+    }
+
+    .meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      margin-bottom: 10px;
+    }
+
+    .meta strong {
+      font-size: 14px;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      border: 2px solid var(--ink);
+      background: var(--paper);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 620px;
+    }
+
+    th,
+    td {
+      border: 1px solid var(--grid);
+      padding: 8px 10px;
+      font-size: 13px;
+    }
+
+    th {
+      background: var(--paper-dark);
+      text-align: left;
+    }
+
+    tbody tr:nth-child(even) td {
+      background: #fffaf0;
+    }
+
+    tbody tr:hover td {
+      background: #fff1d1;
+    }
+
+    .num {
+      text-align: center;
+      width: 52px;
+      font-weight: 600;
+    }
+
+    .status {
+      font-weight: 700;
+      color: #245f2c;
+    }
+
+    .delete-cell {
+      text-align: center;
+      width: 72px;
+    }
+
+    .delete-btn {
+      padding: 6px 8px;
+      border: 2px solid var(--ink);
+      background: #f2c29a;
+      font-size: 11px;
+      cursor: pointer;
+      box-shadow: 2px 2px 0 var(--shadow);
+    }
+
+    .delete-btn:hover {
+      background: #f6b184;
+    }
+
+    .delete-btn:active {
+      transform: translate(1px, 1px);
+      box-shadow: 1px 1px 0 var(--shadow);
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    label {
+      display: block;
+      font-size: 12px;
+      margin-bottom: 6px;
+    }
+
+    input,
+    select,
+    textarea,
+    button {
+      font-family: inherit;
+      font-size: 13px;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 8px;
+      border: 2px solid var(--ink);
+      background: #fffef9;
+    }
+
+    textarea {
+      min-height: 70px;
+      resize: vertical;
+    }
+
+    .form-row {
+      grid-column: span 2;
+    }
+
+    .form-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    button {
+      padding: 10px 16px;
+      border: 2px solid var(--ink);
+      background: var(--alert);
+      box-shadow: 3px 3px 0 var(--shadow);
+      cursor: pointer;
+    }
+
+    button:active {
+      transform: translate(2px, 2px);
+      box-shadow: 1px 1px 0 var(--shadow);
+    }
+
+    .hint {
+      font-size: 11px;
+      color: #5f5246;
+    }
+
+    @keyframes rotate {
+      from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    @keyframes blink {
+      0% { opacity: 1; }
+      50% { opacity: 0.2; }
+      100% { opacity: 1; }
+    }
+
+    @keyframes typing {
+      0% { width: 0; }
+      60% { width: 100%; }
+      100% { width: 100%; }
+    }
+
+    @keyframes meter {
+      0% { width: 15%; }
+      40% { width: 75%; }
+      70% { width: 45%; }
+      100% { width: 95%; }
+    }
+
+    @media (max-width: 960px) {
+      main {
+        grid-template-columns: 1fr;
+      }
+
+      .modem {
+        width: 200px;
+        height: 200px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      main {
+        padding: 18px;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .form-row {
+        grid-column: span 1;
+      }
+
+      .titlebar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+      }
+
+      .meta {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="window">
+      <div class="titlebar">
+        <span>Dial-Up Monitor</span>
+        <small>56Kbps</small>
+      </div>
+      <div class="panel-body">
+        <div class="modem" aria-hidden="true">
+          <div class="holes">
+            <span class="hole"></span>
+            <span class="hole"></span>
+            <span class="hole"></span>
+            <span class="hole"></span>
+            <span class="hole"></span>
+            <span class="hole"></span>
+            <span class="hole"></span>
+            <span class="hole"></span>
+            <span class="hole"></span>
+            <span class="hole"></span>
+            <span class="hole"></span>
+            <span class="hole"></span>
+            <span class="hole"></span>
+            <span class="hole"></span>
+            <span class="hole"></span>
+            <span class="hole"></span>
+          </div>
+          <div class="dial">
+            <span>CONNECT</span>
+          </div>
+        </div>
+        <div class="status-lights">
+          <div class="light">
+            <div class="lamp steady"></div>
+            DCD
+          </div>
+          <div class="light">
+            <div class="lamp blink"></div>
+            TX
+          </div>
+          <div class="light">
+            <div class="lamp blink"></div>
+            RX
+          </div>
+        </div>
+        <div class="log" aria-live="polite">
+          <span class="typed">ATDT 03-0000-0000 ... CONNECT 56.6K</span>
+          <div>ノイズ: krrr-shhh-kiii</div>
+          <div>接続時間: <span id="uptime">00:00</span></div>
+          <div class="meter"><span></span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="list-panel">
+      <div class="window">
+        <div class="titlebar">
+          <span>参加者リスト表</span>
+          <small>kiramu-list</small>
+        </div>
+        <div class="panel-body">
+          <div class="meta">
+            <div>接続中の名簿: <strong id="participant-count">12名</strong></div>
+            <div>次の番号: <strong id="next-number">13</strong></div>
+          </div>
+          <div class="table-wrap">
+            <table aria-label="参加者一覧">
+              <thead>
+                <tr>
+                <th>番号</th>
+                <th>名前</th>
+                <th>参加状況</th>
+                <th>コメント</th>
+                <th>回答日時</th>
+                <th>削除</th>
+                </tr>
+              </thead>
+              <tbody id="participant-body">
+                <tr data-base-id="1">
+                  <td class="num">1</td>
+                  <td>北川 彩佳</td>
+                  <td class="status">参加</td>
+                  <td></td>
+                  <td>2026/1/15 20:17</td>
+                  <td class="delete-cell"><button type="button" class="delete-btn">削除</button></td>
+                </tr>
+                <tr data-base-id="2">
+                  <td class="num">2</td>
+                  <td>片山 裕介</td>
+                  <td class="status">参加</td>
+                  <td>信楽のすけちゃんです！よろしくお願いします！</td>
+                  <td>2026/1/15 20:16</td>
+                  <td class="delete-cell"><button type="button" class="delete-btn">削除</button></td>
+                </tr>
+                <tr data-base-id="3">
+                  <td class="num">3</td>
+                  <td>比嘉 隆介</td>
+                  <td class="status">参加</td>
+                  <td></td>
+                  <td>2026/1/9 22:48</td>
+                  <td class="delete-cell"><button type="button" class="delete-btn">削除</button></td>
+                </tr>
+                <tr data-base-id="4">
+                  <td class="num">4</td>
+                  <td>奥村 ひとみ</td>
+                  <td class="status">参加</td>
+                  <td></td>
+                  <td>2026/1/9 22:47</td>
+                  <td class="delete-cell"><button type="button" class="delete-btn">削除</button></td>
+                </tr>
+                <tr data-base-id="5">
+                  <td class="num">5</td>
+                  <td>葛野 祥平</td>
+                  <td class="status">参加</td>
+                  <td>よろしくお願いします！</td>
+                  <td>2026/1/7 14:02</td>
+                  <td class="delete-cell"><button type="button" class="delete-btn">削除</button></td>
+                </tr>
+                <tr data-base-id="6">
+                  <td class="num">6</td>
+                  <td>岩丸 太志</td>
+                  <td class="status">参加</td>
+                  <td>ゴルフも社会人も初心者ですが、何卒宜しくお願いします😇</td>
+                  <td>2026/1/5 10:36</td>
+                  <td class="delete-cell"><button type="button" class="delete-btn">削除</button></td>
+                </tr>
+                <tr data-base-id="7">
+                  <td class="num">7</td>
+                  <td>秋田 佳英</td>
+                  <td class="status">参加</td>
+                  <td>楽しみにしてます！</td>
+                  <td>2026/1/4 21:20</td>
+                  <td class="delete-cell"><button type="button" class="delete-btn">削除</button></td>
+                </tr>
+                <tr data-base-id="8">
+                  <td class="num">8</td>
+                  <td>西川 侑衣</td>
+                  <td class="status">参加</td>
+                  <td></td>
+                  <td>2025/12/31 19:51</td>
+                  <td class="delete-cell"><button type="button" class="delete-btn">削除</button></td>
+                </tr>
+                <tr data-base-id="9">
+                  <td class="num">9</td>
+                  <td>中尾 匠</td>
+                  <td class="status">参加</td>
+                  <td>メーク リトリス</td>
+                  <td>2025/12/25 9:52</td>
+                  <td class="delete-cell"><button type="button" class="delete-btn">削除</button></td>
+                </tr>
+                <tr data-base-id="10">
+                  <td class="num">10</td>
+                  <td>岡田 真帆</td>
+                  <td class="status">参加</td>
+                  <td>初めての試みなのでお手柔らかにお願いします🙏</td>
+                  <td>2025/12/24 19:16</td>
+                  <td class="delete-cell"><button type="button" class="delete-btn">削除</button></td>
+                </tr>
+                <tr data-base-id="11">
+                  <td class="num">11</td>
+                  <td>佐々木 杏太</td>
+                  <td class="status">参加</td>
+                  <td>楽しみです〜♪</td>
+                  <td>2025/12/23 12:52</td>
+                  <td class="delete-cell"><button type="button" class="delete-btn">削除</button></td>
+                </tr>
+                <tr data-base-id="12">
+                  <td class="num">12</td>
+                  <td>小嶋 良彦</td>
+                  <td class="status">参加</td>
+                  <td>よろしくお願いします。</td>
+                  <td>2025/12/23 12:41</td>
+                  <td class="delete-cell"><button type="button" class="delete-btn">削除</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="window">
+        <div class="titlebar">
+          <span>参加者追加</span>
+          <small>dial-up input</small>
+        </div>
+        <div class="panel-body">
+          <form id="add-form">
+            <div class="form-grid">
+              <div>
+                <label for="name">名前</label>
+                <input id="name" name="name" type="text" placeholder="例: 山田 太郎" required>
+              </div>
+              <div>
+                <label for="status">参加状況</label>
+                <select id="status" name="status">
+                  <option value="参加">参加</option>
+                  <option value="不参加">不参加</option>
+                  <option value="未定">未定</option>
+                </select>
+              </div>
+              <div class="form-row">
+                <label for="comment">コメント</label>
+                <textarea id="comment" name="comment" placeholder="一言どうぞ"></textarea>
+              </div>
+              <div class="form-row form-actions">
+                <div class="hint">回答日時は自動入力されます。</div>
+                <button type="submit">回線に送信</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const body = document.querySelector("#participant-body");
+    const countEl = document.querySelector("#participant-count");
+    const nextNumberEl = document.querySelector("#next-number");
+    const form = document.querySelector("#add-form");
+    const uptimeEl = document.querySelector("#uptime");
+
+    const storageKey = "kiramuListExtras";
+    const deletedBaseKey = "kiramuListDeletedBases";
+    let extras = [];
+    let deletedBases = [];
+
+    const pad = (value) => String(value).padStart(2, "0");
+
+    const createEntryId = () => {
+      if (typeof crypto !== "undefined" && crypto.randomUUID) {
+        return crypto.randomUUID();
+      }
+      return `entry-${Date.now()}-${Math.random().toString(16).slice(2, 10)}`;
+    };
+
+    const formatDate = (date) => {
+      return `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()} ${pad(date.getHours())}:${pad(date.getMinutes())}`;
+    };
+
+    const updateMeta = () => {
+      const count = body.querySelectorAll("tr").length;
+      countEl.textContent = `${count}名`;
+      nextNumberEl.textContent = String(count + 1);
+    };
+
+    const reindexRows = () => {
+      body.querySelectorAll("tr").forEach((row, index) => {
+        const cell = row.querySelector("td.num");
+        if (cell) {
+          cell.textContent = String(index + 1);
+        }
+      });
+    };
+
+    const createDeleteCell = () => {
+      const cell = document.createElement("td");
+      cell.classList.add("delete-cell");
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "delete-btn";
+      button.textContent = "削除";
+      cell.appendChild(button);
+      return cell;
+    };
+
+    const appendRow = (entry) => {
+      const row = document.createElement("tr");
+      if (entry.id) {
+        row.dataset.entryId = entry.id;
+      }
+      const cells = [
+        entry.number,
+        entry.name,
+        entry.status,
+        entry.comment || "",
+        entry.datetime,
+      ];
+
+      cells.forEach((text, index) => {
+        const cell = document.createElement("td");
+        cell.textContent = text;
+        if (index === 0) {
+          cell.classList.add("num");
+        }
+        if (index === 2) {
+          cell.classList.add("status");
+        }
+        row.appendChild(cell);
+      });
+
+      row.appendChild(createDeleteCell());
+      body.appendChild(row);
+    };
+
+    const loadDeletedBases = () => {
+      try {
+        const raw = localStorage.getItem(deletedBaseKey);
+        deletedBases = raw ? JSON.parse(raw) : [];
+      } catch (error) {
+        deletedBases = [];
+      }
+    };
+
+    const saveDeletedBases = () => {
+      localStorage.setItem(deletedBaseKey, JSON.stringify(deletedBases));
+    };
+
+    const removeDeletedBaseRows = () => {
+      body.querySelectorAll("tr[data-base-id]").forEach((row) => {
+        if (deletedBases.includes(row.dataset.baseId)) {
+          row.remove();
+        }
+      });
+    };
+
+    const loadExtras = () => {
+      loadDeletedBases();
+      removeDeletedBaseRows();
+      let needsSave = false;
+      try {
+        const raw = localStorage.getItem(storageKey);
+        extras = raw ? JSON.parse(raw) : [];
+      } catch (error) {
+        extras = [];
+      }
+
+      extras = extras.map((entry) => {
+        if (!entry.id) {
+          needsSave = true;
+          return { ...entry, id: createEntryId() };
+        }
+        return entry;
+      });
+
+      extras.forEach((entry) => {
+        appendRow(entry);
+      });
+
+      if (needsSave) {
+        saveExtras();
+      }
+
+      reindexRows();
+      updateMeta();
+    };
+
+    const saveExtras = () => {
+      localStorage.setItem(storageKey, JSON.stringify(extras));
+    };
+
+    body.addEventListener("click", (event) => {
+      const button = event.target.closest(".delete-btn");
+      if (!button) {
+        return;
+      }
+
+      const row = button.closest("tr");
+      if (!row) {
+        return;
+      }
+
+      const entryId = row.dataset.entryId;
+      const baseId = row.dataset.baseId;
+      row.remove();
+
+      if (entryId) {
+        extras = extras.filter((entry) => entry.id !== entryId);
+        saveExtras();
+      } else if (baseId && !deletedBases.includes(baseId)) {
+        deletedBases.push(baseId);
+        saveDeletedBases();
+      }
+
+      reindexRows();
+      updateMeta();
+    });
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const formData = new FormData(form);
+      const name = String(formData.get("name")).trim();
+      const status = String(formData.get("status")).trim();
+      const comment = String(formData.get("comment")).trim();
+
+      if (!name) {
+        return;
+      }
+
+      const entry = {
+        id: createEntryId(),
+        number: body.querySelectorAll("tr").length + 1,
+        name,
+        status,
+        comment,
+        datetime: formatDate(new Date()),
+      };
+
+      appendRow(entry);
+      extras.push(entry);
+      saveExtras();
+      updateMeta();
+      reindexRows();
+      form.reset();
+    });
+
+    const start = Date.now();
+    setInterval(() => {
+      const elapsed = Math.floor((Date.now() - start) / 1000);
+      const minutes = Math.floor(elapsed / 60);
+      const seconds = elapsed % 60;
+      uptimeEl.textContent = `${pad(minutes)}:${pad(seconds)}`;
+    }, 1000);
+
+    loadExtras();
+  </script>
+</body>
+</html>
