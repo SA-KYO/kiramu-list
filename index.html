@@ -273,6 +273,13 @@
       color: #245f2c;
     }
 
+    .name {
+      font-weight: 800;
+      font-size: 14px;
+      color: #1b1712;
+      letter-spacing: 0.04em;
+    }
+
     .delete-cell {
       text-align: center;
       width: 72px;
@@ -531,11 +538,11 @@
         <div class="status-lights">
           <div class="light">
             <div class="lamp steady"></div>
-            kojikoji
+            小嶋良彦
           </div>
           <div class="light">
             <div class="lamp blink"></div>
-            ヨネックス
+            所属：ヨネックス
           </div>
           <div class="light">
             <div class="lamp blink"></div>
@@ -543,7 +550,7 @@
           </div>
         </div>
         <div class="log" aria-live="polite">
-          <span class="typed">kojikoji -kojikoji1940</span>
+          <span class="typed">コジマに接続中.....    </span>
           <div>ノイズ: コジマだよ！！！</div>
           <div>接続時間: <span id="uptime">00:00</span></div>
           <div class="meter"><span></span></div>
@@ -758,6 +765,9 @@
         if (!cell.dataset.label) {
           cell.dataset.label = labels[index] || "";
         }
+        if (index === 1) {
+          cell.classList.add("name");
+        }
       });
     };
 
@@ -790,6 +800,9 @@
         cell.textContent = text;
         if (index === 0) {
           cell.classList.add("num");
+        }
+        if (index === 1) {
+          cell.classList.add("name");
         }
         if (index === 2) {
           cell.classList.add("status");
