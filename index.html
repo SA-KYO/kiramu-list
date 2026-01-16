@@ -87,8 +87,8 @@
     }
 
     .modem {
-      width: 220px;
-      height: 220px;
+      width: 260px;
+      height: 260px;
       margin: 0 auto 18px;
       border: 3px solid var(--ink);
       border-radius: 50%;
@@ -108,19 +108,21 @@
 
     .dial {
       position: absolute;
-      inset: 46px;
+      inset: 28px;
       border-radius: 50%;
-      border: 2px solid rgba(0, 0, 0, 0.5);
-      background: radial-gradient(circle at 40% 40%, #fff 0 20%, #dbc7a7 60%, #b09065 100%);
       display: grid;
       place-items: center;
       animation: rotate 8s linear infinite;
+      background: url("IMG_5432.JPG") center / cover no-repeat;
+      border: none;
     }
 
-    .dial span {
-      font-size: 12px;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
+    .dial-image {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      border-radius: 50%;
+      box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.2);
     }
 
     .holes {
@@ -394,8 +396,12 @@
       }
 
       .modem {
-        width: 200px;
-        height: 200px;
+        width: 220px;
+        height: 220px;
+      }
+
+      .dial {
+        inset: 26px;
       }
     }
 
@@ -460,6 +466,15 @@
         padding: 18px;
       }
 
+      .modem {
+        width: 200px;
+        height: 200px;
+      }
+
+      .dial {
+        inset: 24px;
+      }
+
       .form-grid {
         grid-template-columns: 1fr;
       }
@@ -486,7 +501,7 @@
   <main>
     <section class="window">
       <div class="titlebar">
-        <span>KOJIKOJI</span>
+        <span>希楽夢杯　参加者リスト</span>
         <small>5454Kbps</small>
       </div>
       <div class="panel-body">
@@ -510,7 +525,7 @@
             <span class="hole"></span>
           </div>
           <div class="dial">
-            <span>CONNECT</span>
+            <img class="dial-image" src="dial-image.png" alt="CONNECT">
           </div>
         </div>
         <div class="status-lights">
