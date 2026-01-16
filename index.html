@@ -24,6 +24,7 @@
     body {
       margin: 0;
       font-family: "MS PGothic", "Osaka", "Hiragino Kaku Gothic ProN", "Yu Gothic", "Courier New", monospace;
+      font-weight: 700;
       color: var(--ink);
       background:
         radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.65), rgba(255, 255, 255, 0) 45%),
@@ -68,6 +69,7 @@
       font-size: 14px;
       letter-spacing: 0.08em;
       text-transform: uppercase;
+      font-weight: 700;
       border-bottom: 2px solid var(--ink);
       display: flex;
       justify-content: space-between;
@@ -241,11 +243,13 @@
       border: 1px solid var(--grid);
       padding: 8px 10px;
       font-size: 13px;
+      font-weight: 700;
     }
 
     th {
       background: var(--paper-dark);
       text-align: left;
+      font-weight: 700;
     }
 
     tbody tr:nth-child(even) td {
@@ -259,7 +263,7 @@
     .num {
       text-align: center;
       width: 52px;
-      font-weight: 600;
+      font-weight: 700;
     }
 
     .status {
@@ -300,6 +304,7 @@
       display: block;
       font-size: 12px;
       margin-bottom: 6px;
+      font-weight: 700;
     }
 
     input,
@@ -317,6 +322,7 @@
       padding: 8px;
       border: 2px solid var(--ink);
       background: #fffef9;
+      font-weight: 700;
     }
 
     textarea {
@@ -341,6 +347,7 @@
       background: var(--alert);
       box-shadow: 3px 3px 0 var(--shadow);
       cursor: pointer;
+      font-weight: 700;
     }
 
     button:active {
@@ -389,6 +396,62 @@
       .modem {
         width: 200px;
         height: 200px;
+      }
+    }
+
+    @media (max-width: 860px) {
+      .table-wrap {
+        border: none;
+        background: transparent;
+        overflow: visible;
+      }
+
+      table {
+        min-width: 0;
+        border-collapse: separate;
+        border-spacing: 0 12px;
+      }
+
+      thead {
+        display: none;
+      }
+
+      tbody tr {
+        display: block;
+        border: 2px solid var(--grid);
+        background: #fffaf0;
+      }
+
+      tbody tr:nth-child(even) td {
+        background: transparent;
+      }
+
+      tbody td {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        border: none;
+        border-bottom: 1px dashed var(--grid);
+        padding: 8px 10px;
+      }
+
+      tbody td::before {
+        content: attr(data-label);
+        font-weight: 700;
+        color: var(--ink);
+      }
+
+      tbody td:last-child {
+        border-bottom: none;
+      }
+
+      .num {
+        width: auto;
+        text-align: left;
+      }
+
+      .delete-cell {
+        justify-content: flex-end;
       }
     }
 
@@ -453,19 +516,19 @@
         <div class="status-lights">
           <div class="light">
             <div class="lamp steady"></div>
-            DCD
+            kojikoji
           </div>
           <div class="light">
             <div class="lamp blink"></div>
-            TX
+            ヨネックス
           </div>
           <div class="light">
             <div class="lamp blink"></div>
-            RX
+            契約プロ
           </div>
         </div>
         <div class="log" aria-live="polite">
-          <span class="typed">ATDT 03-0000-0000 ... CONNECT 56.6K</span>
+          <span class="typed">kojikoji -kojikoji1940</span>
           <div>ノイズ: コジマだよ！！！</div>
           <div>接続時間: <span id="uptime">00:00</span></div>
           <div class="meter"><span></span></div>
@@ -645,6 +708,7 @@
     const deletedBaseKey = "kiramuListDeletedBases";
     let extras = [];
     let deletedBases = [];
+    const labels = ["番号", "名前", "参加状況", "コメント", "回答日時", "削除"];
 
     const pad = (value) => String(value).padStart(2, "0");
 
@@ -670,6 +734,14 @@
         const cell = row.querySelector("td.num");
         if (cell) {
           cell.textContent = String(index + 1);
+        }
+      });
+    };
+
+    const applyLabelsToRow = (row) => {
+      row.querySelectorAll("td").forEach((cell, index) => {
+        if (!cell.dataset.label) {
+          cell.dataset.label = labels[index] || "";
         }
       });
     };
@@ -712,6 +784,7 @@
 
       row.appendChild(createDeleteCell());
       body.appendChild(row);
+      applyLabelsToRow(row);
     };
 
     const loadDeletedBases = () => {
@@ -762,6 +835,9 @@
         saveExtras();
       }
 
+      body.querySelectorAll("tr").forEach((row) => {
+        applyLabelsToRow(row);
+      });
       reindexRows();
       updateMeta();
     };
