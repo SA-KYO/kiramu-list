@@ -216,6 +216,39 @@
       gap: 20px;
     }
 
+    .cta-section {
+      display: grid;
+      justify-items: center;
+      padding: 8px 6px 0;
+    }
+
+    .cta-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 14px 22px;
+      border-radius: 10px;
+      border: 2px solid #b6491b;
+      background: linear-gradient(180deg, #ff7f3a, #e24e1b);
+      color: #fff;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      box-shadow: 0 6px 0 #a63f17, 0 14px 22px rgba(0, 0, 0, 0.18);
+      text-align: center;
+    }
+
+    .cta-button span {
+      display: inline-block;
+    }
+
+    .cta-button:active {
+      transform: translateY(2px);
+      box-shadow: 0 4px 0 #a63f17, 0 10px 18px rgba(0, 0, 0, 0.18);
+    }
+
     .meta {
       display: flex;
       justify-content: space-between;
@@ -501,6 +534,12 @@
         align-items: flex-start;
         gap: 6px;
       }
+
+      .cta-button {
+        width: 100%;
+        font-size: 13px;
+        padding: 12px 16px;
+      }
     }
   </style>
 </head>
@@ -559,6 +598,9 @@
     </section>
 
     <section class="list-panel">
+      <div class="cta-section">
+        <a class="cta-button" href="https://kojima-aisiteru.a.app/">こじるりビットコインを無料でGET!!!!!</a>
+      </div>
       <div class="window">
         <div class="titlebar">
           <span>参加者リスト表</span>
