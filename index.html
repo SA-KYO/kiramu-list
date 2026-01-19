@@ -420,39 +420,6 @@
       opacity: 0.9;
     }
 
-    .video-section {
-      border: 2px solid var(--ink);
-      background: #11100f;
-      padding: 16px;
-      box-shadow: 6px 6px 0 var(--shadow);
-      color: #f6e2bd;
-    }
-
-    .video-title {
-      font-size: 13px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      margin-bottom: 10px;
-    }
-
-    .video-frame {
-      border: 2px solid #3d2c1f;
-      background: #1a1512;
-      padding: 8px;
-    }
-
-    .video-frame video {
-      width: 100%;
-      display: block;
-      background: #000;
-    }
-
-    .video-note {
-      margin-top: 8px;
-      font-size: 11px;
-      opacity: 0.85;
-    }
-
     .meta {
       display: flex;
       justify-content: space-between;
@@ -776,9 +743,6 @@
         max-width: 240px;
       }
 
-      .video-section {
-        padding: 12px;
-      }
     }
   </style>
 </head>
@@ -842,8 +806,8 @@
       </div>
       <section class="dj-section" aria-label="DJブース">
         <div class="dj-header">
-          <div class="dj-title">DJブース</div>
-          <div class="dj-sub">KIRAMU WAVE / 128 BPM</div>
+          <div class="dj-title">DJ-KIRAMU</div>
+          <div class="dj-sub">KOJIMA WAVE / 128 BPM</div>
         </div>
         <div class="dj-deck">
           <div class="vu-meter" aria-hidden="true">
@@ -860,7 +824,7 @@
           </button>
           <div class="dj-panel">
             <strong>ON AIR</strong>
-            <div>ye.MP4 audio only</div>
+            <div>Yayyyy!!!.MP4 audio only</div>
             <div class="dj-leds" aria-hidden="true">
               <span class="dj-led"></span>
               <span class="dj-led"></span>
@@ -868,15 +832,8 @@
             </div>
           </div>
         </div>
-        <p class="dj-note">レコードボタンを押すとye.MP4の音のみが流れます。</p>
-        <audio id="dj-audio" src="ye.MP4" preload="metadata"></audio>
-      </section>
-      <section class="video-section" aria-label="ye.MP4 ビデオ">
-        <div class="video-title">YE VIDEO STREAM</div>
-        <div class="video-frame">
-          <video src="ye.MP4" autoplay muted loop playsinline controls></video>
-        </div>
-        <div class="video-note">動画は自動再生、音はDJボタンから。</div>
+        <p class="dj-note">レコードボタンを押すとコジマのYayyyy!!!が聴けるぜ！</p>
+        <audio id="dj-audio" src="Yayyyy!!!.MP4" preload="metadata"></audio>
       </section>
       <div class="window">
         <div class="titlebar">
