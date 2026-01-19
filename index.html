@@ -250,14 +250,13 @@
     }
 
     .dj-section {
-      border: 2px solid var(--ink);
-      background: linear-gradient(140deg, #fff7e2, #f1e1c3 60%, #e9d2ad);
-      color: var(--ink);
-      padding: 14px;
-      box-shadow: 4px 4px 0 var(--shadow);
+      border: 2px solid #29170f;
+      background: linear-gradient(140deg, #211a28, #321b20 60%, #1a1518);
+      color: #f8e6c2;
+      padding: 16px;
+      box-shadow: 6px 6px 0 rgba(33, 26, 21, 0.35);
       position: relative;
       overflow: hidden;
-      margin: 12px 0 18px;
     }
 
     .dj-section::before {
@@ -265,10 +264,9 @@
       position: absolute;
       inset: 0;
       background:
-        radial-gradient(circle at 18% 12%, rgba(255, 184, 90, 0.35), transparent 55%),
-        radial-gradient(circle at 80% 85%, rgba(92, 140, 220, 0.2), transparent 60%),
-        repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.3) 0 2px, transparent 2px 14px);
-      opacity: 0.6;
+        radial-gradient(circle at 20% 10%, rgba(255, 158, 92, 0.25), transparent 55%),
+        radial-gradient(circle at 80% 80%, rgba(95, 140, 255, 0.18), transparent 60%);
+      opacity: 0.7;
       pointer-events: none;
     }
 
@@ -284,7 +282,7 @@
 
     .dj-title {
       font-size: 16px;
-      color: var(--accent);
+      color: #ffd382;
     }
 
     .dj-sub {
@@ -312,8 +310,8 @@
     .vu-bar {
       height: 18%;
       border-radius: 6px 6px 2px 2px;
-      background: linear-gradient(180deg, #ffe39a, #ff9b4a);
-      box-shadow: 0 0 8px rgba(255, 145, 70, 0.35);
+      background: linear-gradient(180deg, #ffd67c, #ff7d33);
+      box-shadow: 0 0 8px rgba(255, 130, 60, 0.35);
     }
 
     .dj-section.is-playing .vu-bar {
@@ -345,9 +343,9 @@
       width: 120px;
       height: 120px;
       border-radius: 50%;
-      border: 3px solid #f6d27f;
-      background: radial-gradient(circle at 35% 35%, #ff845a 0 30%, #b62224 70%, #671216 100%);
-      box-shadow: 0 8px 0 #6a1a1a, 0 18px 24px rgba(51, 24, 21, 0.35), 0 0 18px rgba(255, 160, 90, 0.35);
+      border: 3px solid #f5c05a;
+      background: radial-gradient(circle at 35% 35%, #f2664a 0 30%, #9c1a1c 70%, #5a0e12 100%);
+      box-shadow: 0 8px 0 #551112, 0 18px 24px rgba(0, 0, 0, 0.35);
       cursor: pointer;
       display: grid;
       place-items: center;
@@ -368,8 +366,8 @@
       position: absolute;
       inset: 12px;
       border-radius: 50%;
-      background: repeating-radial-gradient(circle, rgba(0, 0, 0, 0.18) 0 6px, rgba(255, 255, 255, 0.08) 6px 10px);
-      border: 2px solid rgba(255, 240, 200, 0.55);
+      background: repeating-radial-gradient(circle, rgba(0, 0, 0, 0.15) 0 6px, rgba(255, 255, 255, 0.06) 6px 10px);
+      border: 2px solid rgba(255, 245, 220, 0.4);
     }
 
     .record-button.is-playing .record-disc {
@@ -379,7 +377,7 @@
     .record-label {
       position: relative;
       z-index: 1;
-      background: #ffe4a8;
+      background: #f9e1a1;
       border-radius: 999px;
       padding: 4px 10px;
       border: 1px solid rgba(44, 15, 18, 0.4);
@@ -391,7 +389,7 @@
     }
 
     .dj-panel strong {
-      color: #c3641f;
+      color: #ffb36b;
       display: block;
       font-size: 12px;
     }
@@ -413,7 +411,7 @@
 
     .dj-section.is-playing .dj-led {
       background: #ffb347;
-      box-shadow: 0 0 12px rgba(255, 178, 75, 0.9);
+      box-shadow: 0 0 10px rgba(255, 178, 75, 0.8);
     }
 
     .dj-note {
@@ -806,6 +804,37 @@
       <div class="cta-section">
         <a class="cta-button" href="https://kojima-aisiteru.netlify.app/">こじるりビットコインを無料でGET!!!!!</a>
       </div>
+      <section class="dj-section" aria-label="DJブース">
+        <div class="dj-header">
+          <div class="dj-title">DJブース</div>
+          <div class="dj-sub">KIRAMU WAVE / 128 BPM</div>
+        </div>
+        <div class="dj-deck">
+          <div class="vu-meter" aria-hidden="true">
+            <span class="vu-bar"></span>
+            <span class="vu-bar"></span>
+            <span class="vu-bar"></span>
+            <span class="vu-bar"></span>
+            <span class="vu-bar"></span>
+            <span class="vu-bar"></span>
+          </div>
+          <button type="button" class="record-button" id="record-button" aria-pressed="false">
+            <span class="record-disc" aria-hidden="true"></span>
+            <span class="record-label">PLAY</span>
+          </button>
+          <div class="dj-panel">
+            <strong>ON AIR</strong>
+            <div>Yayyyy!!!.MP4 audio only</div>
+            <div class="dj-leds" aria-hidden="true">
+              <span class="dj-led"></span>
+              <span class="dj-led"></span>
+              <span class="dj-led"></span>
+            </div>
+          </div>
+        </div>
+        <p class="dj-note">レコードボタンを押すとYayyyy!!!.MP4の音のみが流れます。</p>
+        <audio id="dj-audio" src="Yayyyy!!!.MP4" preload="metadata"></audio>
+      </section>
       <div class="window">
         <div class="titlebar">
           <span>参加者リスト表</span>
@@ -816,37 +845,6 @@
             <div>接続中の名簿: <strong id="participant-count">12名</strong></div>
             <div>次の番号: <strong id="next-number">13</strong></div>
           </div>
-          <section class="dj-section" aria-label="DJブース">
-            <div class="dj-header">
-              <div class="dj-title">DJ-KIRAMU</div>
-              <div class="dj-sub">KOJIMA WAVE / 128 BPM</div>
-            </div>
-            <div class="dj-deck">
-              <div class="vu-meter" aria-hidden="true">
-                <span class="vu-bar"></span>
-                <span class="vu-bar"></span>
-                <span class="vu-bar"></span>
-                <span class="vu-bar"></span>
-                <span class="vu-bar"></span>
-                <span class="vu-bar"></span>
-              </div>
-              <button type="button" class="record-button" id="record-button" aria-pressed="false">
-                <span class="record-disc" aria-hidden="true"></span>
-                <span class="record-label">PLAY</span>
-              </button>
-              <div class="dj-panel">
-                <strong>ON AIR</strong>
-                <div>Yayyyyy!!.MP4 audio only</div>
-                <div class="dj-leds" aria-hidden="true">
-                  <span class="dj-led"></span>
-                  <span class="dj-led"></span>
-                  <span class="dj-led"></span>
-                </div>
-              </div>
-            </div>
-            <p class="dj-note">レコードボタンを押すとYayyyyy!!.MP4の音のみが流れます。</p>
-            <audio id="dj-audio" src="Yayyyyy!!.MP4" preload="metadata"></audio>
-          </section>
           <div class="table-wrap">
             <table aria-label="参加者一覧">
               <thead>
